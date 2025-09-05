@@ -1,0 +1,14 @@
+# Opret rækken af tal
+tal <- c(1, 2, 3, 5, 6)
+
+# Lav en tilfældig permutation af rækken
+tilfaeldig_raekke <- sample(tal)
+
+# Første kolonne: 2 til 6
+kol1 <- 2:6
+
+# Lav matrix med 2 kolonner og 5 rækker
+M <- cbind(kol1, tilfaeldig_raekke)
+
+# Print matrixen
+print(M)
