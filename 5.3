@@ -1,0 +1,11 @@
+#5.3 Pivot
+#først indlæser jeg tidyR
+library(tidyr)
+
+#Antag at dataframen fra opgave 5.2 hedder klasse2_df
+df_wide <- pivot_wider(klasse2clean_df,
+                       names_from = Klasse,  #Laver nye kolonner for A,B,C,D
+                       values_from = Score). #Værdierne kommer fra gennemsnittet
+
+#Se resultatet
+print(df_wide)
