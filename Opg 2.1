@@ -1,0 +1,35 @@
+#Indlæs data
+bolig <- read.csv("Data/newhomes 2.csv")
+#Fjerner række 1 og kolonne 1 i data
+bolig1 <- bolig[-1,-1]
+
+#Laver data om til Data.frame
+bolig_df <- data.frame(bolig1)
+#Fjern "Kr" ved pris kolonne
+bolig_df$pris <- gsub("kr\\.","",bolig_df$pris)
+bolig_df$pris <- gsub("\\.","",bolig_df$pris) #Beholdes så når du laver as.numeric den ikke laver NA
+bolig_df$pris <- as.numeric(bolig_df$pris) #Pris kolonne værdier laves om til numeric
+
+#Fjern m² ved kvm kolonne
+bolig_df$kvm <- gsub(" m²","",bolig_df$kvm)
+bolig_df$kvm <- as.numeric(bolig_df$kvm) #Kvm kolonne laves om til numeric
+Finder NA værdier
+anyNA(bolig_df$kvm)
+
+#Ændre NA værdier til 0
+bolig_df$kvm[is.na(bolig_df$kvm)] <- 0
+
+#Ejerudgift clean
+bolig_df$ejerudg <- gsub("[^-0-9]","",bolig_df$ejerudg) #gsub alt undtagen 0-9
+bolig_df$ejerudg <- as.numeric(bolig_df$ejerudg) #gør det til numeric
+
+
+#Beskrivende statisk
+
+summary(bolig_df$pris)
+mean(bolig_df$pris)
+sd(bolig_df$pris)
+
+summary(bolig_df$ejerudg)
+mean(bolig_df$ejerudg)
+sd(bolig_df$ejerudg)
