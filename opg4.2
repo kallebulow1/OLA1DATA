@@ -1,0 +1,73 @@
+bevs <- read.csv("data/bev.csv", sep = ";", header = FALSE, stringsAsFactors = FALSE)
+
+
+alko_sub <- alko[-1, ]
+colnames(bevs)[colnames(bevs) == "V25"] <- "2023"
+
+
+bevs <- kategori[-1, ]
+
+
+bevs_sub <- bevs[-1, ]
+
+colnames(bevs)[colnames(bevs) == "V1"] <- "kategori"
+colnames(bevs)[colnames(bevs) == "V2"] <- "2000"
+colnames(bevs)[colnames(bevs) == "V3"] <- "2001"
+colnames(bevs)[colnames(bevs) == "V4"] <- "2002"
+colnames(bevs)[colnames(bevs) == "V5"] <- "2003"
+colnames(bevs)[colnames(bevs) == "V6"] <- "2004"
+colnames(bevs)[colnames(bevs) == "V7"] <- "2005"
+colnames(bevs)[colnames(bevs) == "V8"] <- "2006"
+colnames(bevs)[colnames(bevs) == "V9"] <- "2007"
+colnames(bevs)[colnames(bevs) == "V10"] <- "2008"
+colnames(bevs)[colnames(bevs) == "V11"] <- "2009"
+
+colnames(bevs)[colnames(bevs) == "V12"] <- "2010"
+colnames(bevs)[colnames(bevs) == "V13"] <- "2011"
+colnames(bevs)[colnames(bevs) == "V14"] <- "2012"
+colnames(bevs)[colnames(bevs) == "V15"] <- "2013"
+colnames(bevs)[colnames(bevs) == "V16"] <- "2014"
+colnames(bevs)[colnames(bevs) == "V17"] <- "2015"
+colnames(bevs)[colnames(bevs) == "V18"] <- "2016"
+colnames(bevs)[colnames(bevs) == "V19"] <- "2017"
+colnames(bevs)[colnames(bevs) == "V20"] <- "2018"
+
+colnames(bevs)[colnames(bevs) == "V21"] <- "2019"
+colnames(bevs)[colnames(bevs) == "V22"] <- "2020"
+colnames(bevs)[colnames(bevs) == "V23"] <- "2021"
+colnames(bevs)[colnames(bevs) == "V24"] <- "2022"
+
+
+
+
+# Gem værdierne (alt undtagen 'kategori')
+values <- as.matrix(bevs_sub[, -1])
+values <- apply(values, 2, as.numeric)
+
+years <- as.numeric(colnames(bevs_sub)[-1])
+
+# Første plot (første gruppe)
+plot(years, values[1, ],
+     type = "l", lwd = 2, col = 1,
+     ylim = range(values, na.rm = TRUE),
+     xlab = "År", ylab = "Faste priser (mio. kr.)",
+     main = "Forbrug af alkoholiske drikkevarer 2000–2023")
+
+for (i in 2:nrow(values)) {
+  lines(years, values[i, ], col = i, lwd = 2)
+}
+
+legend("topright", legend = bevs_sub$kategori,
+       col = 1:nrow(values), lwd = 2, cex = 0.7)
+
+
+# Udtræk kun de numeriske værdier (årstal)
+vals <- as.matrix(bevs_sub[, -1])
+vals <- apply(vals, 2, as.numeric)   # sikr at alt er numeric
+rownames(vals) <- bevs_sub$kategori # navngiv rækkerne
+
+# Korrelationsmatrix (Pearson)
+cor_mat <- cor(t(vals), use = "pairwise.complete.obs")
+
+# Se resultat
+print(round(cor_mat, 2))
