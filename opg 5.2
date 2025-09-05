@@ -1,0 +1,27 @@
+#5.2
+
+#lav en ny dataframe som bygger på den forrige dataframe
+klasse2_df <- data.frame(
+  Klasse=rep(c("A","B","C","D"),each=length(seq(1,9)))
+)
+
+#Lav 2. kolonne
+klasse2_df$Uge <- rep(1:9, times=4)
+
+#Lav 3. kolonne
+klasse2_df$Score <- NA
+
+#loop skal hver 3. gang lave en ny dataframe 1x3 med samme navn som i 5.1
+#Indholdet skal være som følger: 1 element, og 2 elementer henter fra 5.1 framen.
+#Sidste element skal være gennemsnittet af de forrige tre observationer.
+
+hopvektor <- seq(1,36,3)
+
+for (i in hopvektor) {
+  print(klasse_df[i,3]+klasse_df[i+1,3]+klasse_df[i+2,3])
+  klasse2_df[i,3]=round(sum(klasse_df[i,3]+klasse_df[i+1,3]+klasse_df[i+2,3])/3,1)
+
+}
+
+na.omit(klasse2_df)
+klasse2clean_df <- na.omit(klasse2_df)
