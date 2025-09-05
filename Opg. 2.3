@@ -71,3 +71,9 @@ lmtest6 <- lm(pris_pr_kvm ~ alder, data = bolig_df)
 summary(lmtest6)
 
 
+#Lav korrelationmatrix
+
+cormatrix <- bolig_df[c(""), c("ejerudg","grund","vaer", "liggetid", "alder")]
+cor(cormatrix, use = "complete.obs")
+
+
