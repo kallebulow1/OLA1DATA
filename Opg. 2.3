@@ -1,0 +1,73 @@
+#Lav en ny kolonne pris_pr_kvm
+
+bolig_df$pris_pr_kvm <- bolig_df$pris/bolig_df$kvm
+
+
+#Fjern NA, NAN, IF
+
+bolig_df <- bolig_df[is.finite(bolig_df$pris_pr_kvm), ]
+
+#Linear regression 1 for grund
+#Gsub grund, fjerner "grund" og fjerner "m2", ved at bruge ^
+bolig_df$grund <- gsub("[^-0-9\\.]","",bolig_df$grund)
+bolig_df$grund <- (gsub(".000]","",bolig_df$grund))
+bolig_df$grund <- as.character(bolig_df$grund)
+#Wulf lavede det her for at fikse at der kom 000 bag på igen da jeg lavede as.numeric
+bolig_df$grund <- as.numeric(gsub("\\D", "", bolig_df$grund))
+
+# nu kan du regne med den
+bolig_df$nygrund <- bolig_df$grund / 1000
+
+bolig_df$nygrund = bolig_df$grund/1000
+bolig_df$nygrund=ifelse(bolig_df$grund<100,bolig_df$grund*1000,bolig_df$grund)
+
+round(bolig_df$nygrund,0)*1000
+bolig_df <- bolig_df[is.finite(bolig_df$grund), ]
+
+#Linear regression 1 for grund
+
+lmtest2 <- lm(pris_pr_kvm ~ nygrund, data = bolig_df)
+summary(lmtest2)
+
+
+#Linear regresson 2 for ejerudgift
+
+bolig_df$ejerudg <- gsub("[^-0-9]","",bolig_df$ejerudg) #gsub alt undtagen 0-9
+bolig_df$ejerudg <- as.numeric(bolig_df$ejerudg) #gør det til numeric
+
+test3 <- lm(pris_pr_kvm ~ ejerudg, data= bolig_df)
+summary(lmtest3)
+
+
+
+#Linear reggresion 3 for liggetid
+bolig_df$liggetid <- gsub("[^-0-9]","",bolig_df$liggetid)#gsub alt undtagen 0-9
+bolig_df$liggetid <- as.numeric(bolig_df$liggetid)
+bolig_df$liggetid <- as.numeric(gsub("\\D", "", bolig_df$liggetid)) # \\D er en regex (regular expression), der betyder: alt der IKKE er et tal (0-9).
+
+#Ændre NA til 0
+
+bolig_df$liggetid[is.na(bolig_df$liggetid)] <- 0 
+
+
+lmtest4 <- lm(pris_pr_kvm ~ liggetid, data = bolig_df)
+summary(lmtest4)
+
+#Linear regression 4 for værelse
+#Fjern alt undtagen tal 
+bolig_df$vaer <- gsub("[^0-9]", "", bolig_df$vaer)
+
+bolig_df$vaer <- as.numeric(bolig_df$vaer)
+
+lmtest5 <- lm(pris_pr_kvm ~ vaer, data = bolig_df)
+summary(lmtest5)
+
+#Linaer regression 5 for alder
+
+bolig_df$alder <- gsub("[^0-9]","", bolig_df$alder)
+bolig_df$alder <- as.numeric(bolig_df$alder)
+
+lmtest6 <- lm(pris_pr_kvm ~ alder, data = bolig_df)
+summary(lmtest6)
+
+
