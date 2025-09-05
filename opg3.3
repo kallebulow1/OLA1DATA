@@ -1,0 +1,20 @@
+library(ggplot2)
+
+# Funktion der slår med 6 terninger og returnerer summen
+slag_med_6 <- function() {
+  sum(sample(1:6, size = 6, replace = TRUE))
+}
+
+# Slå 1.000.000 gange og gem resultaterne
+set.seed(123)  # for reproducérbarhed
+resultater <- replicate(1000000, slag_med_6())
+
+# Læg resultaterne i et dataframe
+df <- data.frame(sum = resultater)
+
+# Lav barplot
+ggplot(df, aes(x = factor(sum))) +
+  geom_bar(fill = "darkgreen") +
+  labs(title = "Fordeling af summen af 6 terninger (1.000.000 slag)",
+       x = "Summen af 6 terninger",
+       y = "Frekvens")
