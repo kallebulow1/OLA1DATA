@@ -1,0 +1,31 @@
+#4.1 Hent data
+alkohol <- read_excel("alkoholny.xlsx")
+
+#hent følgende pakker
+library(tidyr)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+
+#Lav om til en dataframe
+data.frame(alkohol)
+header <- colnames(alkohol)
+
+#Kald den første header for "typer"
+header[1]="typer"
+
+colnames(alkohol)=header
+
+alko_longer <- pivot_longer(alkohol,c(2:ncol(alkohol)),values_to = "value",names_to = "years")
+
+#lav ggplot
+ggplot(alko_longer, aes(x=years,y=value,group = typer,color = typer))+
+  geom_line()
+
+#Fjern 02 så den ikke er med i grafen
+alko_clean <- alko_longer%>%
+  filter(typer !=("02 ALKOHOLISKE DRIKKEVARER OG TOBAK"))
+
+#Kør den nye graf uden 02
+ggplot(alko_clean, aes(x=years,y=value,group = typer,color = typer))+
+  geom_line()
